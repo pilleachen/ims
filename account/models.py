@@ -36,7 +36,7 @@ class StdProfile(models.Model):
     semester = models.CharField(max_length=2, choices=SEM_CHOICES, default='S4')
     course = models.CharField(max_length=3, choices=COURSE_CHOICES, default='BCA')
     
-    roll_number = models.CharField(max_length=2, unique=True)
+    roll_number = models.CharField(max_length=2)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='M')
 
     def __str__(self):
