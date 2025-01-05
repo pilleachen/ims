@@ -1,0 +1,358 @@
+{% load custom_tags %}
+
+<!-- mrk_view.html -->
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Attendance</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- bootstarp css link for tables -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+     <!-- icons -->
+  <link href="{% static 'assets/img/ims-sq.png' %}" rel="icon">
+  <link href="{% static 'assets/img/ims-sq.png' %}" rel="apple-touch-icon">
+  
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+
+
+  </head>
+  <body>
+
+    <header id="header" class="header d-flex align-items-center sticky-top">
+      <div class="container-fluid container-xl position-relative d-flex align-items-center">
+    
+        <a href="index.html" class="logo d-flex align-items-center me-auto">
+          <h1 class="sitename">IMS</h1>
+        </a>
+        {% if request.user.is_superuser %}  <!-- Admin Nav Bar-->
+              <nav id="navmenu" class="navmenu">
+                <ul>
+                  <li><a href="{% url 'admin_home' %}" >Home<br></a></li>
+                  <li><a href="{% url 'about' %}"  class="active">About</a></li>
+                  <li><a href="{% url 'approval' %}"  >Approval</a></li>
+                  <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li class="dropdown"><a href="{% url 'attendance' %}"><span>Attendance</span> </a></li>
+                      <li class="dropdown"><a href="{% url 'view_subjects' %}"><span>View Subjects</span> </a></li>
+                      <li class="dropdown"><a href="{% url 'syllabus' %}"><span>View Syllabus</span> </a></li>
+        
+                      <li class="dropdown"><a href="#"><span>Mark</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><li class="dropdown"><a href="{% url 'university_mrk' %}"><span>University Mark</span> </a></li>
+                          <li><li class="dropdown"><a href="{% url 'view_marks' %}"><span>Internal Mark</span></a></li> 
+                        </ul>
+                      </li>
+        
+                      <li class="dropdown"><a href="#"><span>Time Table</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="{% url 'examtimetable' %}">Exam Time Table</a></li>                   
+                          <li><a href="{% url 'classtimetable' %}">Class Time Table</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+              </nav>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+              </nav>
+          
+          {% elif request.user.is_staff %}     <!-- Faculty Nav Bar-->
+          <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="{% url 'faculty_home' %}" class="active">Home<br></a></li>
+              <li><a href="{% url 'about' %}">About</a></li>
+              <li><a href="{% url 'notice_view' %}">Notice</a></li>
+              <li><a href="{% url 'approval' %}"  >Approval</a></li>
+    
+              <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li class="dropdown"><a href="{% url 'attendance' %}"><span>Attendance</span> </a>
+    
+                  <li class="dropdown"><a href="#"><span>Subject</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="{% url 'add_subject' %}">Add Subjects</a></li>
+                      <li><a href="{% url 'view_subjects' %}">View Subjects</a></li>
+                    </ul>
+                  </li>
+    
+                  <li class="dropdown"><a href="#"><span>Syllabus</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="{% url 'add_syllabus' %}">Add Syllabus</a></li>
+                      <li><a href="{% url 'syllabus' %}">View Syllabus</a></li>
+                    </ul>
+                  </li>
+                    
+                  </li>
+    
+                  <li class="dropdown"><a href="#"><span>Mark</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><li class="dropdown"><a href="#"><span>University Mark</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="{% url 'add_UniversityMarks' %}">Add University Mark</a></li>
+                          <li><a href="{% url 'university_mrk' %}">View University Mark</a></li>
+                        </ul>
+                      </li></li>
+    
+                      <li><li class="dropdown"><a href="#"><span>Internal Mark</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="{% url 'add_marks' %}">Add Internal Mark</a></li>
+                          <li><a href="{% url 'view_marks' %}">View Internal Mark</a></li>
+                        </ul>
+                      </li></li>
+                    </ul>
+                  </li>
+    
+                  <li class="dropdown"><a href="#"><span>Time Table</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><li class="dropdown"><a href="#"><span>Exam Time Table</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="{% url 'add_exam' %}">Add Exam Time Table</a></li>
+                          <li><a href="{% url 'examtimetable' %}">View Exam Time Table</a></li>
+                        </ul>
+                      </li></li>
+    
+                      <li><li class="dropdown"><a href="#"><span>Class Time Table</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                          <li><a href="{% url 'add_classtimetable' %}">Add Class Time Table</a></li>
+                          <li><a href="{% url 'classtimetable' %}">View Class Time Table</a></li>
+                        </ul>
+                      </li></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+          
+          {% else %}    <!-- User Nav Bar-->
+          <nav id="navmenu" class="navmenu">
+            <ul>
+              <li><a href="{% url 'home' %}" >Home<br></a></li>
+              <li><a href="{% url 'about' %}" class="active">About</a></li>
+              <li><a href="{% url 'notice_view' %}">Notice</a></li>
+              <li class="dropdown"><a href="#"><span>More</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li class="dropdown"><a href="#"><span>Profile</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="{% url 'profile' %}">Edit Profile</a></li>
+                      <li><a href="{% url 'user_detail' user.id %}">View Profile</a></li>
+                    </ul>
+                  </li>
+    
+                  <li class="dropdown"><a href="{% url 'attendance' %}"><span>Attendance</span> </a></li>
+                  <li class="dropdown"><a href="{% url 'view_subjects' %}"><span>View Subjects</span> </a></li>
+                  <li class="dropdown"><a href="{% url 'syllabus' %}"><span>View Syllabus</span> </a></li>
+    
+                  <li class="dropdown"><a href="#"><span>Mark</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><li class="dropdown"><a href="{% url 'university_mrk' %}"><span>University Mark</span> </a></li>
+                      <li><li class="dropdown"><a href="{% url 'view_marks' %}"><span>Internal Mark</span></a></li> 
+                    </ul>
+                  </li>
+    
+                  <li class="dropdown"><a href="#"><span>Time Table</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+                    <ul>
+                      <li><a href="{% url 'examtimetable' %}">Exam Time Table</a></li>                   
+                      <li><a href="{% url 'classtimetable' %}">Class Time Table</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </nav>
+          {% endif %}
+        <a class="btn-getstarted" href="{% url 'logout' %}" >Logout</a>
+      </div>
+    </header>
+      <hr>
+
+      <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" data-aos="fade">
+            <div class="heading">
+              <div class="container">
+                <div class="row d-flex justify-content-center text-center">
+                  <div class="col-lg-8">
+                    <h1>Attendance<br></h1>
+                    <p class="mb-0">Monthly Attendance percentage of Students</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <nav class="breadcrumbs">
+              <div class="container">
+                <ol>
+                  <li><a href="{% url 'home' %}">Home</a></li>
+                  <li class="current">Attendance<br></li>
+                </ol>
+              </div>
+            </nav>
+          </div><!-- End Page Title -->
+    
+    
+
+
+          <section id="about" class="about section">
+
+            <div class="container">
+              {% if request.user.is_staff or request.user.is_superuser %}
+              <h2>Upload Attendance</h2>
+              <form method="post">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <button type="submit">Submit</button>
+              </form>
+              
+      
+              </div>
+      
+            </div>
+      
+          </section><!-- /About Section -->
+         
+    {% elif role == 'student' or request.user.is_superuser %}
+        <h2>My Attendance Records</h2>
+    {% endif %}
+
+    {% if attendance_records %}
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Student Id</th>
+                <th scope="col">Student</th>
+                <th scope="col">Month</th>
+                <th scope="col">Year</th>
+                <th scope="col">Attendance Percentage</th>
+            </tr>
+            </thead>
+            <tbody>
+              {% for record in attendance_records %}
+            <tr>
+                <th scope="row">{{ record.student.id }}</th>
+                <td>{{ record.student.user.first_name }} {{ record.student.user.last_name }}</td>
+                <td>{{ record.month }}</td>
+                <td>{{ record.year }}</td>
+                <td>{{ record.attendance_percentage }}</td>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No attendance records available.</p>
+    {% endif %}
+        
+      </main>
+    <br><br><br>
+    <!-- /FOOTER -->
+<footer id="footer" class="footer position-relative">
+
+  <div class="container footer-top">
+    <div class="row gy-4">
+      <div class="col-lg-4 col-md-6 footer-about">
+        <a href="index.html" class="logo d-flex align-items-center">
+          <span class="sitename">CASM</span>
+        </a>
+        <div class="footer-contact pt-3">
+          <p>Govt. BHSS, Compound,</p>
+          <p>Mavelikara, 690101</p>
+          <p class="mt-3"><strong>Phone:</strong> <span>04792304494</span></p>
+          <p><strong>Email:</strong> <span>casmavelikkara-at-ihrd.ac.in</span></p>
+        </div>
+        <div class="social-links d-flex mt-4">
+          <a href=""><i class="bi bi-twitter-x"></i></a>
+          <a href=""><i class="bi bi-facebook"></i></a>
+          <a href=""><i class="bi bi-instagram"></i></a>
+          <a href=""><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Useful Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Privacy policy</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Our Services</h4>
+        <ul>
+          <li><a href="#">State-of-the-Art Facilities</a></li>
+          <li><a href="#">Diverse Academic Programs</a></li>
+          <li><a href="#">Vibrant Campus Life</a></li>
+          <li><a href="#">Strong Career Support</a></li>
+          <li><a href="#">Global Opportunities</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-4 col-md-12 footer-newsletter">
+          <h4>State-of-the-Art Facilities</h4>
+          Our campus features modern classrooms,<br> advanced labs, a comprehensive library, and <br>top-tier sports and 
+          recreational facilities. <br>Students enjoy cutting-edge technology and a comfortable living environment in our 
+          secure residence halls. Experience the best resources <br>and a vibrant community at our institution.
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container copyright text-center mt-4">
+    <p>© <span>Copyright</span> <strong class="px-1 sitename">IMS</strong> <span>All Rights Reserved</span></p>
+    <div class="credits">
+      <p>Thank You</p>
+    </div>
+  </div>
+
+</footer>
+
+
+     <!-- bootstarp js link for tables -->
+     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+     <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+ </body>
+</html>
